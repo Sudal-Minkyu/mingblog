@@ -3,6 +3,7 @@ package com.song.mingblog.account;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -26,5 +27,15 @@ public class Account {
 
     @Column(name="user_name")
     private String username;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="user_role")
+    private AccountRole role;
+
+    @Column(name="insert_id")
+    private String insert_id;
+
+    @Column(name="insert_date")
+    private LocalDateTime insertDateTime;
 
 }
