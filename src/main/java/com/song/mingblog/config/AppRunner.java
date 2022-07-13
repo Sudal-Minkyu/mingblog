@@ -30,7 +30,7 @@ public class AppRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         //사용자저장
-        Account account1 = Account.builder()
+        Account saveAccount = Account.builder()
                 .userid("admin")
                 .username("김민규")
                 .password("123789")
@@ -39,9 +39,9 @@ public class AppRunner implements ApplicationRunner {
                 .insertDateTime(LocalDateTime.now())
                 .build();
 
-        Account account = accountService.findAccountByUsername(account1.getUsername());
+        Account account = accountService.findAccountByUsername(saveAccount.getUsername());
         if(account == null){
-            accountService.save(account1);
+            accountService.save(saveAccount);
         }
     }
 

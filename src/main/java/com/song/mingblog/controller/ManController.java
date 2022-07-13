@@ -10,13 +10,18 @@ public class ManController {
 
     @RequestMapping(value="/")
     public String index(){
-        return "index";
+        return "main/index";
+    }
+
+    @RequestMapping(value="/main")
+    public String main(){
+        return "main/mainpage";
     }
 
     // 로그인페이지
     @RequestMapping("/login")
     public String login(){
-        return "login";
+        return "main/login";
     }
 
 }
