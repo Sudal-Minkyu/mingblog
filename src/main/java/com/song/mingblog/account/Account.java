@@ -36,6 +36,6 @@ public class Account {
     private String insert_id;
 
     @Column(name="insert_date")
-    private LocalDateTime insertDateTime;
+    private LocalDateTime insert_date;
 
 }

@@ -36,7 +36,7 @@ public class AppRunner implements ApplicationRunner {
                 .password("123789")
                 .role(AccountRole.ROLE_ADMIN)
                 .insert_id("system")
-                .insertDateTime(LocalDateTime.now())
+                .insert_date(LocalDateTime.now())
                 .build();
 
         Account account = accountService.findAccountByUsername(saveAccount.getUsername());
