@@ -21,24 +21,14 @@ public class NoticeRestController {
 
     // 게시물 등록 API
     @PostMapping("/reg")
-    public Map<String, String> apiNoticeReg(@RequestBody @Valid NoticeDto noticeDto, BindingResult result){
+    public Map<String, String> apiNoticeReg(@RequestBody @Valid NoticeDto noticeDto){
 
         Map<String, String> maps = new HashMap<>();
-        if(result.hasErrors()){
+        log.info("noticeDto.getTitle : "+ noticeDto.getTitle());
+        log.info("noticeDto.getContents : "+ noticeDto.getContents());
 
-            List<FieldError> fieldErrorList = result.getFieldErrors();
-            FieldError firstFieldError = fieldErrorList.get(0);
-            String fieldName = firstFieldError.getField();
-            String errorMessage = firstFieldError.getDefaultMessage();
-
-            maps.put(fieldName, errorMessage);
-        }else{
-            log.info("noticeDto.getTitle : "+ noticeDto.getTitle());
-            log.info("noticeDto.getContents : "+ noticeDto.getContents());
-
-            maps.put("title",noticeDto.getTitle());
-            maps.put("contents",noticeDto.getContents());
-        }
+        maps.put("title",noticeDto.getTitle());
+        maps.put("contents",noticeDto.getContents());
 
         return maps;
 

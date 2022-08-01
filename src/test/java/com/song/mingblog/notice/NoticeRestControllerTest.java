@@ -25,9 +25,9 @@ class NoticeRestControllerTest {
     @DisplayName("공시사항 게시물 등록 테스트")
     void apiNoticeRegTest1() throws Exception{
         mockMvc.perform(MockMvcRequestBuilders.post("/api/notice/reg")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"title\" : \"제목입니다.\", \"contents\" : \"내용입니다.\"}")
-        )
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\" : \"제목입니다.\", \"contents\" : \"내용입니다.\"}")
+                )
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("제목입니다."))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.contents").value("내용입니다."))
@@ -38,11 +38,13 @@ class NoticeRestControllerTest {
     @DisplayName("공시사항 제목 필수입력 체크 테스트")
     void apiNoticeRegTest2() throws Exception{
         mockMvc.perform(MockMvcRequestBuilders.post("/api/notice/reg")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"title\" : \"\", \"contents\" : \"내용입니다.\"}")
-        )
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("제목을 입력해주세요."))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\" : \"\", \"contents\" : \"내용입니다.\"}")
+                )
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("400"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("잘못된 요청입니다."))
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.validation.title").value("제목을 입력해주세요."))
                 .andDo(MockMvcResultHandlers.print());
     }
 
