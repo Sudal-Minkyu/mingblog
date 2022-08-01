@@ -3,7 +3,6 @@ package com.song.mingblog.notice;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 /**
@@ -14,8 +13,8 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(of = "id")
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name="mb_notice")
 public class Notice {
 
@@ -27,6 +26,7 @@ public class Notice {
     @Column(name="md_title")
     private String title; // 글 제목(NotNull)
 
+    @Lob
     @Column(name="md_contents")
     private String contents; // 글 제목(Null)
 
@@ -42,4 +42,8 @@ public class Notice {
     @Column(name="modify_date")
     private LocalDateTime modify_date;
 
+    public Notice(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+    }
 }
