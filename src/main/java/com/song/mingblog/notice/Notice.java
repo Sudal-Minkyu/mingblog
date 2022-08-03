@@ -10,11 +10,8 @@ import java.time.LocalDateTime;
  * Remark : 공지사항 게시물 엔티티
  */
 @Entity
-@Data
-@EqualsAndHashCode(of = "id")
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Table(name="mb_notice")
 public class Notice {
 
@@ -42,8 +39,18 @@ public class Notice {
     @Column(name="modify_date")
     private LocalDateTime modify_date;
 
-    public Notice(String title, String contents) {
+    // @Builder
+    // * 빌더의 장점
+    // 1. 필요한 데이터만 설정할 수 있음
+    // 2. 유연성을 확보할 수 있음
+    // 3. 가독성을 높일 수 있음
+    // 4. * 객체의 불변성을 확보할 수 있음
+    @Builder
+    public Notice(String title, String contents, String insert_id, LocalDateTime insert_date) {
         this.title = title;
         this.contents = contents;
+        this.insert_id = insert_id;
+        this.insert_date = insert_date;
     }
+
 }

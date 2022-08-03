@@ -17,11 +17,14 @@ public class NoticeService {
         this.noticeRepository = noticeRepository;
     }
 
-    public void save(NoticeDto noticeDto) {
-        Notice notice = new Notice(noticeDto.getTitle(), noticeDto.getContents());
-        notice.setInsert_id("system");
-        notice.setInsert_date(LocalDateTime.now());
-        noticeRepository.save(notice);
+    public Notice save(NoticeDto noticeDto) {
+        Notice notice = Notice.builder()
+                .title(noticeDto.getTitle())
+                .contents(noticeDto.getContents())
+                .insert_id("system")
+                .insert_date(LocalDateTime.now())
+                .build();
+        return noticeRepository.save(notice);
     }
 
 }

@@ -1,14 +1,15 @@
 package com.song.mingblog.notice;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class NoticeDto {
 
     @NotBlank(message = "제목을 입력해주세요.")
