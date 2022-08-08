@@ -27,4 +27,11 @@ public class NoticeService {
         return noticeRepository.save(notice);
     }
 
+    // 게시물 뷰 API
+    public Notice view(Long id) {
+        Notice notice = noticeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 글입니다."));
+        return notice;
+    }
+
 }

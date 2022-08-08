@@ -2,10 +2,7 @@ package com.song.mingblog.notice;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -36,7 +33,14 @@ public class NoticeRestController {
 
         // 저장된 값의 ID를 유연하게 전달
         return Map.of("id", saveNotice.getId());
-
     }
+
+    // 게시물 뷰 API
+    @GetMapping("/view/{id}")
+    public Notice apiNoticeView(@PathVariable(value = "id") Long id){
+        Notice notice = noticeService.view(id);
+        return notice;
+    }
+
 
 }
