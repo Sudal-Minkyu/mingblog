@@ -22,24 +22,15 @@ public class NoticeRestController {
 
     // 게시물 등록 API
     @PostMapping("/reg")
-    public Map apiNoticeReg(@RequestBody @Valid NoticeDto noticeDto){
-        Notice saveNotice = noticeService.save(noticeDto);
-//        Map<String, String> maps = new HashMap<>();
-//        log.info("noticeDto.getTitle : "+ noticeDto.getTitle());
-//        log.info("noticeDto.getContents : "+ noticeDto.getContents());
-//
-//        maps.put("title",noticeDto.getTitle());
-//        maps.put("contents",noticeDto.getContents());
-
-        // 저장된 값의 ID를 유연하게 전달
-        return Map.of("id", saveNotice.getId());
+    public void apiNoticeReg(@RequestBody @Valid NoticeDto noticeDto){
+        noticeService.save(noticeDto);
     }
 
     // 게시물 뷰 API
     @GetMapping("/view/{id}")
-    public Notice apiNoticeView(@PathVariable(value = "id") Long id){
-        Notice notice = noticeService.view(id);
-        return notice;
+    public NoticeReponse apiNoticeView(@PathVariable(value = "id") Long id){
+        NoticeReponse noticeReponse = noticeService.view(id);
+        return noticeReponse;
     }
 
 

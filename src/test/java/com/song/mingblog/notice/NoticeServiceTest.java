@@ -66,12 +66,12 @@ class NoticeServiceTest {
         Notice saveNotice = noticeService.save(request);
 
         // when
-        Notice notice = noticeService.view(saveNotice.getId());
+        NoticeReponse noticeReponse = noticeService.view(saveNotice.getId());
 
         // than
         assertEquals(1L, noticeRepository.count());
-        assertEquals("good", notice.getTitle());
-        assertEquals("bad", notice.getContents());
+        assertEquals("good", noticeReponse.getTitle());
+        assertEquals("bad", noticeReponse.getContents());
     }
 
     @Test
@@ -87,13 +87,41 @@ class NoticeServiceTest {
         noticeRepository.save(request);
 
         // when
-        Notice notice = noticeService.view(request.getId());
+        NoticeReponse noticeReponse = noticeService.view(request.getId());
 
         // expected
-        mockMvc.perform(get("/api/notice//view/{id}", notice.getId())
+        mockMvc.perform(get("/api/notice//view/{id}", noticeReponse.getId())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
+
+    @Test
+    @DisplayName("공지사항 제목 글자제한 테스트")
+    public void noticeServiceViewTest3() throws Exception {
+        // given
+        Notice request = Notice.builder()
+                .title("12345678901234567")
+                .contents("내용입니다.")
+                .insert_id("test")
+                .insert_date(LocalDateTime.now())
+                .build();
+        noticeRepository.save(request);
+
+        // when
+        NoticeReponse noticeReponse = noticeService.view(request.getId());
+
+        // expected
+        mockMvc.perform(get("/api/notice//view/{id}", noticeReponse.getId())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        // than
+        assertEquals(1L, noticeRepository.count());
+        assertEquals("1234567890", noticeReponse.getTitle());
+        assertEquals("내용입니다.", noticeReponse.getContents());
+    }
+
 
 }
