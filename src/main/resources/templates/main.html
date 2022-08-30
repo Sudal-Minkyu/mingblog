@@ -1,0 +1,45 @@
+<html lang="ko"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate ="~{/layout/default}">
+
+<!-- 사용자 CSS 추가 -->
+<th:block layout:fragment="css">
+
+</th:block>
+
+<!-- 사용자 스크립트 추가 -->
+<th:block layout:fragment="script">
+	<script type="text/javascript">
+		$(function() {
+			console.log("메인페이지");
+		});
+	</script>
+</th:block>
+
+<div layout:fragment="content" class="content">
+	<ul>
+		<li sec:authorize="hasRole('ROLE_ADMIN')">
+			<a href="#" class="nav__link">관리자만 보이는거</a>
+			<a href="/admin/userreg" class="nav__link">사용자등록</a>
+		</li>
+		<li sec:authorize="hasRole('ROLE_USER')">
+			<a href="#" class="nav__link">사용자만 보이는거</a>
+		</li>
+		<li sec:authorize="isAuthenticated()">
+			<a href="#" class="nav__link">모두 보이는거</a>
+		</li>
+	</ul>
+
+	<span>현재 로그인 ID</span>
+	<div th:text="${session.userId}"></div>
+	<br/>
+	<span>현재 사용자명</span>
+	<div th:text="${session.userName}"></div>
+	<form th:action="@{/logout}" method="post">
+		<input type="submit" class="info__btn" value="로그아웃"/>
+	</form>
+</div>
+
+</html>

@@ -1,12 +1,20 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate ="~{layout/default}">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate ="~{/layout/loginlayout}">
 
-<div layout:fragment="content" class="error-wrap">
+<!-- 사용자 CSS 추가 -->
+<th:block layout:fragment="css">
 
-	<h2><span>404</span>Forbidden</h2>
-	<p><span>요청하신 페이지를 찾을 수 없습니다.</span></p>
+</th:block>
 
+<!-- 사용자 스크립트 추가 -->
+<th:block layout:fragment="script">
+
+</th:block>
+
+<div layout:fragment="content">
+  <h1>404 에러페이지</h1>
 </div>
+
 </html>

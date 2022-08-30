@@ -1,0 +1,109 @@
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate ="~{/layout/default}">
+
+<th:block layout:fragment="script">
+    <script type="text/javascript">
+        $(function(){
+            console.log("제이쿼리 테스트");
+        });
+
+        function accountSave(){
+            console.log("사용자등록");
+
+            if($("#overlap").val() !== "1"){
+                alert("아이디 중복체크를 해주세요.");
+                return false;
+            }
+
+            const token = $("meta[name='_csrf']").attr("content");
+            const header = $("meta[name='_csrf_header']").attr("content");
+
+            const params = {
+                userid : $("#userid").val(),
+                password : $("#password").val(),
+                userName : $("#userName").val(),
+            }
+
+            $.ajax({
+                url : '/api/account/accountSave',
+                type: 'POST',
+                data: JSON.stringify(params),
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                beforeSend: function(xhr){
+                    xhr.setRequestHeader(header, token);
+                },
+                error: function (response) {
+                    console.log(response.status);
+                },
+                success: function (request) {
+                    if(request.status === 200){
+                        alert("사용자등록 완료");
+                    }
+                    else {
+                        if (request.err_msg2 === null) {
+                            alert(request.err_msg);
+                        } else {
+                            alert(request.err_msg + "<br>" + request.err_msg2);
+                        }
+                    }
+                }
+            });
+        }
+
+        function saveOverlap(){
+            console.log("사용자아이디 중복체크");
+
+            const token = $("meta[name='_csrf']").attr("content");
+            const header = $("meta[name='_csrf_header']").attr("content");
+
+            const params = {
+                userid : $("#userid").val(),
+            }
+
+            $.ajax({
+                url : '/api/account/saveOverlap',
+                type: 'GET',
+                data: params,
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                beforeSend: function(xhr){
+                    xhr.setRequestHeader(header, token);
+                },
+                error: function (response) {
+                    console.log(response.status);
+                },
+                success: function (request) {
+                    const $overlap = $("#overlap");
+                    if(request.status === 200){
+                        alert("중복체크 완료");
+                        $overlap.val("1");
+                    }
+                    else {
+                        $overlap.val("0");
+                        if (request.err_msg2 === null) {
+                            alert(request.err_msg);
+                        } else {
+                            alert(request.err_msg + "<br>" + request.err_msg2);
+                        }
+                    }
+                }
+            });
+        }
+
+    </script>
+</th:block>
+
+<div layout:fragment="content" class="content">
+    <h1 >사용자 등록</h1>
+    <input type="hidden" id="overlap">
+    <input type="text" value="" placeholder="아이디" id="userid">
+    <button type="button" onclick="saveOverlap()">ID중복체크</button>
+    <input type="text" value="" placeholder="이름" id="userName">
+    <input type="password" value="" placeholder="비밀번호" id="password">
+    <button type="button" onclick="accountSave()">사용자등록</button>
+</div>
+
+</html>

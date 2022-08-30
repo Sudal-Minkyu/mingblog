@@ -1,5 +1,6 @@
 package com.song.mingblog.account;
 
+import com.song.mingblog.account.accountdtos.AccountRole;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,7 +27,7 @@ public class Account {
     private String password;
 
     @Column(name="user_name")
-    private String username;
+    private String userName;
 
     @Enumerated(EnumType.STRING)
     @Column(name="user_role")

@@ -1,116 +1,89 @@
 package com.song.mingblog.config;
 
+import com.song.mingblog.handler.CustomAuthenticationEntryPoint;
+import com.song.mingblog.handler.LoginFailureHandler;
+import com.song.mingblog.handler.LoginSuccessHandler;
+import com.song.mingblog.handler.WebAccessDeniedHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-@Configuration
+/**
+ * @author Minkyu
+ * Date : 2022-07-15
+ * Time :
+ * Remark : 기본 시큐리티셋팅
+ */
 @EnableWebSecurity
-public class SecurityConfig implements WebMvcConfigurer {
+@Configuration
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    // 권한이 없는 사용자 접근에 대한 handler
-//    private final WebAccessDeniedHandler webAccessDeniedHandler;
-//
-//    // 인증되지 않은 사용자 접근에 대한 handler
-//    private final WebAuthenticationEntryPoint webAuthenticationEntryPoint;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final WebAccessDeniedHandler webAccessDeniedHandler;
 
-//    @Autowired
-//    public SecurityConfig(WebAccessDeniedHandler webAccessDeniedHandler, WebAuthenticationEntryPoint webAuthenticationEntryPoint){
-//        this.webAccessDeniedHandler = webAccessDeniedHandler;
-//        this.webAuthenticationEntryPoint = webAuthenticationEntryPoint;
-//    }
+    @Autowired
+    public SecurityConfig(CustomAuthenticationEntryPoint customAuthenticationEntryPoint, WebAccessDeniedHandler webAccessDeniedHandler){
+        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
+        this.webAccessDeniedHandler = webAccessDeniedHandler;
+    }
 
     @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins("*");
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/favicon.ico","/swagger*/**","/v2/api-docs","/webjars/**");
     }
 
-//    @Bean
-//    public void configure(WebSecurity web) {
-//        web.ignoring()
-//                .antMatchers("/resources/**")
-//                .antMatchers("/css/**")
-//                .antMatchers("/js/**")
-//                .antMatchers("/favicon*/**")
-//                .antMatchers("/img/**");
-//    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
-
-
-    // 스프링 시큐리티 규칙
-    @Bean
-    protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
-
-        http.csrf().disable() // csrf 보안 설정 비활성화
-                .httpBasic().disable() // rest api 만을 고려
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션은 사용하지 않음
-                .and()
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+//                .csrf().disable() // csrf 보안 설정
+//                .httpBasic().disable() // rest api 만을 고려
 
                 // 스프링에서 '로그인하지 않은 사용자'가 아닌 '익명 사용자'로 판단하기 때문에 Forbidden이 발생
-                .anonymous().disable(); // anonymous를 off시켜야 Unauthorize Exception이 잘 작동한다.
+//                .anonymous().disable() // // anonymous를 off시켜야 Unauthorize Exception이 잘 작동한다.
 
-//                .antMatcher("/**").authorizeRequests() // 보호된 리소스 URI에 접근할 수 있는 권한 설정
-//                .antMatchers("/", "/error403", "/error404","/auth/loginActive","/auth/logout",
-//                        "/api/get", "/api/notice/reg").permitAll() // 전체 접근 허용
-//                .antMatchers("/main").authenticated() // 인증된 사용자만 접근 허용
-//                .antMatchers("/mypage").hasRole("ADMIN") // ROLE_ADMIN 권한을 가진 사용자만 접근 허용
-//                .antMatchers("/check").hasAnyRole("ADMIN", "USER") // ROLE_ADMIN 혹은 ROLE_USER 권한을 가진 사용자만 접근 허용
+                .authorizeRequests()
 
-                // 그 외 항목 전부 인증 적용
-//                .anyRequest()
-//                .authenticated()
-//                .and();
+                .antMatchers("/assets/**","/login","/logout","/error/**").permitAll()
+                .antMatchers("/admin/**","/api/account/**").hasRole("ADMIN")
+                .antMatchers("/user/**","/api/notice/**").hasAnyRole("ADMIN","USER")
+                .anyRequest()
+                .authenticated()
 
-//                 // exception 처리
-//                .exceptionHandling()
-//                .accessDeniedHandler(webAccessDeniedHandler) // 권한이 없는 사용자 접근 시
-//                .authenticationEntryPoint(webAuthenticationEntryPoint) // 인증되지 않은 사용자 접근 시
-//                .and()
-//
-//                .formLogin() // 로그인하는 경우에 대해 설정
-//                .loginPage("/login") // 로그인 페이지 URL을 설정
-//                .successForwardUrl("/main") // 로그인 성공 후 이동할 URL 설정
-//                .failureForwardUrl("/login") // 로그인 실패 URL 설정
-//                .permitAll()
-//                .and()
-//
-//                .logout() // 로그아웃 관련 처리
-//                .logoutUrl("/logout") // 로그아웃 URL 설정
-//                .logoutSuccessUrl("/login") // 로그아웃 성공 후 이동할 URL 설정
-//                .deleteCookies("JSESSIONID") // 로그아웃 후 쿠기 삭제 설정
-//                .and();
+                .and()
 
-//                // 사용자 인증 필터 적용
-//                .addFilterBefore(usrCustomAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .formLogin() // 로그인하는 경우에 대해 설정
+                .loginPage("/login") // 로그인 페이지 URL 설정
+                .successHandler(successHandler()) // 로그인 성공 후 설정
+                .failureHandler(failureHandler()) // 로그인 실패시 설정
 
+                .and()
 
+                .logout() // 로그아웃 관련 처리
+                .logoutSuccessUrl("/login") // 로그아웃 성공 후 이동할 URL 설정
+                .deleteCookies("JSESSIONID") // 로그아웃 후 쿠기 삭제 설정
+                .invalidateHttpSession(true) // 세션 날리기
 
-        return http.build();
+                .and()
+                .exceptionHandling()
+                .accessDeniedHandler(webAccessDeniedHandler) // 권한없는 사용자가 접근시 막아주는 핸들러
+                .authenticationEntryPoint(customAuthenticationEntryPoint) // 인증되지 않은 사용자가 접근시 막아주는 핸들러
+        ;
     }
-//
-//    // 로그인 성공 시 실행될 handler bean 등록
-//    @Bean
-//    public UsrCustomLoginSuccessHandler usrCustomLoginSuccessHandler() {
-//        return new UsrCustomLoginSuccessHandler();
-//    }
-//
-//    // 로그인 실패 시 실행될 handler bean 등록
-//    @Bean
-//    public UserCustomLoginFailHandler usrCustomLoginFailHandler() {
-//        return new UserCustomLoginFailHandler();
-//    }
 
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+        return new LoginSuccessHandler("/loginActive");
+    }
+
+    @Bean
+    public AuthenticationFailureHandler failureHandler() {
+        return new LoginFailureHandler();
+    }
 
 }

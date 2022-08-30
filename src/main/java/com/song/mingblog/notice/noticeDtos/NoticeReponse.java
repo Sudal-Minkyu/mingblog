@@ -1,4 +1,4 @@
-package com.song.mingblog.notice;
+package com.song.mingblog.notice.noticeDtos;
 
 import lombok.Builder;
 import lombok.Getter;

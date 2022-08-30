@@ -1,12 +1,12 @@
 package com.song.mingblog.notice;
 
+import com.song.mingblog.notice.noticeDtos.NoticeDto;
+import com.song.mingblog.notice.noticeDtos.NoticeReponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -29,8 +29,7 @@ public class NoticeRestController {
     // 게시물 뷰 API
     @GetMapping("/view/{id}")
     public NoticeReponse apiNoticeView(@PathVariable(value = "id") Long id){
-        NoticeReponse noticeReponse = noticeService.view(id);
-        return noticeReponse;
+        return noticeService.view(id);
     }
 
 

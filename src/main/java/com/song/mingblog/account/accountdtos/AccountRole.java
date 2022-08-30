@@ -1,10 +1,12 @@
-package com.song.mingblog.account;
+package com.song.mingblog.account.accountdtos;
 
-import lombok.Getter;
-
-@Getter
+/**
+ * @author Minkyu
+ * Date : 2022-07-15
+ * Time :
+ * Remark : 사용자 권한 구분
+ */
 public enum AccountRole {
-
     ROLE_ADMIN("ROLE_ADMIN", "관리자"),
     ROLE_USER("ROLE_USER", "사용자");
 
@@ -16,6 +18,12 @@ public enum AccountRole {
         this.desc = desc;
     }
 
-}
+    public String getCode() {
+        return code;
+    }
+
+    public String getDesc() {
+        return desc;
+    }}
 
 

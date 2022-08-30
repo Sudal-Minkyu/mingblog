@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -22,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations="classpath:application-test.properties") // 테스트용 db 설정
 @AutoConfigureMockMvc
 @SpringBootTest
+@WithMockUser(roles = "ADMIN")
 class NoticeRestControllerTest {
 
     @Autowired
@@ -54,6 +57,7 @@ class NoticeRestControllerTest {
         // when
         mockMvc.perform(post("/api/notice/reg")
                         .contentType(APPLICATION_JSON)
+                        .with(csrf()) // csrf토큰 설정
                         .content(json)
                 )
                 .andExpect(status().isOk())
@@ -75,6 +79,7 @@ class NoticeRestControllerTest {
         // when
         mockMvc.perform(post("/api/notice/reg")
                         .contentType(APPLICATION_JSON)
+                        .with(csrf()) // csrf토큰 설정
                         .content(json)
                 )
                 .andExpect(status().isBadRequest())
@@ -100,6 +105,7 @@ class NoticeRestControllerTest {
         // when
         mockMvc.perform(post("/api/notice/reg")
                         .contentType(APPLICATION_JSON)
+                        .with(csrf()) // csrf토큰 설정
                         .content(json)
                 )
                 .andExpect(status().isOk())

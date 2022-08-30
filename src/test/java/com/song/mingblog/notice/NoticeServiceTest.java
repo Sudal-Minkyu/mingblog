@@ -1,5 +1,7 @@
 package com.song.mingblog.notice;
 
+import com.song.mingblog.notice.noticeDtos.NoticeDto;
+import com.song.mingblog.notice.noticeDtos.NoticeReponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -7,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -16,10 +19,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @TestPropertySource(locations="classpath:application-test.properties") // 테스트용 db 설정
 @AutoConfigureMockMvc
 @SpringBootTest
+@WithMockUser(roles = "ADMIN")
 class NoticeServiceTest {
 
     @Autowired
@@ -91,6 +96,7 @@ class NoticeServiceTest {
 
         // expected
         mockMvc.perform(get("/api/notice//view/{id}", noticeReponse.getId())
+                .with(csrf()) // csrf토큰 설정
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -113,6 +119,7 @@ class NoticeServiceTest {
 
         // expected
         mockMvc.perform(get("/api/notice//view/{id}", noticeReponse.getId())
+                .with(csrf()) // csrf토큰 설정
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());

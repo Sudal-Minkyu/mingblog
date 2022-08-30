@@ -1,5 +1,7 @@
 package com.song.mingblog.notice;
 
+import com.song.mingblog.notice.noticeDtos.NoticeDto;
+import com.song.mingblog.notice.noticeDtos.NoticeReponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,13 +34,11 @@ public class NoticeService {
         Notice notice = noticeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 글입니다."));
 
-        NoticeReponse noticeReponse = NoticeReponse.builder()
+        return NoticeReponse.builder()
                 .id(notice.getId())
                 .title(notice.getTitle())
                 .contents(notice.getContents())
                 .build();
-
-        return noticeReponse;
     }
 
 }

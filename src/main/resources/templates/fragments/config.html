@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html lang="ko"
 	  xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-	<head th:fragment="configFragment">
+<head th:fragment="configFragment">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta http-equiv="p3p" content='CP="CAO DSP AND SO " policyref="/w3c/p3p.xml"' />
+    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 
-		<script src="/assets/js/jquery.min.js"></script>
-		<script src="/assets/js/jquery-ui.min.js"></script>
-		<script src="/assets/js/ming.ajax.js"></script>
+    <!-- favicon 에러방지용도-->
+    <link rel="shortcut icon" href="#">
 
-		<!-- 사용자 CSS 영역이 들어감 -->
-		<th:block layout:fragment="css">
-		</th:block>
-		
-		<!-- 사용자 스크립트 영역이 들어감 -->
-		<th:block layout:fragment="script">
-		</th:block>
+    <!-- 공통으로 쓰이는 css파일을넣는다.-->
 
-	</head>
+    <!-- 사용자 CSS 영역이 들어감 -->
+    <th:block layout:fragment="css"></th:block>
+
+    <!-- 공통으로 쓰이는 js파일을넣는다.-->
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/jquery-ui.min.js"></script>
+    <script src="/assets/js/ming.ajax.js"></script>
+
+    <th:block layout:fragment="script"></th:block>
+
+</head>
 </html>
+
