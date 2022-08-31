@@ -14,8 +14,12 @@
 </th:block>
 
 <div layout:fragment="content">
-  <h1>403 해당 권한이 없습니다.</h1>
-  <button type="button" onclick="homeGo()" >홈페이지</button>
+
+  <h1>401 세션이 종료되었습니다.<br/>다시 로그인해주세요.</h1>
+  <div>
+    <button type="button" onclick="loginGo()" >로그인</button>
+</div>
+
 </div>
 
 </html>

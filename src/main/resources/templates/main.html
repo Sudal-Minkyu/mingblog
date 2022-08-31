@@ -19,27 +19,40 @@
 </th:block>
 
 <div layout:fragment="content" class="content">
+
 	<ul>
 		<li sec:authorize="hasRole('ROLE_ADMIN')">
-			<a href="#" class="nav__link">관리자만 보이는거</a>
+			<a href="#" class="nav__link">권한이  관리자만 보이는거</a>
 			<a href="/admin/userreg" class="nav__link">사용자등록</a>
 		</li>
 		<li sec:authorize="hasRole('ROLE_USER')">
-			<a href="#" class="nav__link">사용자만 보이는거</a>
+			<a href="#" class="nav__link">권한이 사용자만 보이는거</a>
 		</li>
 		<li sec:authorize="isAuthenticated()">
-			<a href="#" class="nav__link">모두 보이는거</a>
+			<a href="#" class="nav__link">로그인 하면 보이는거</a>
+		</li>
+		<li sec:authorize="!isAuthenticated()">
+			<a href="#" class="nav__link">로그인 안하면 보이는거</a>
 		</li>
 	</ul>
 
-	<span>현재 로그인 ID</span>
-	<div th:text="${session.userId}"></div>
-	<br/>
-	<span>현재 사용자명</span>
-	<div th:text="${session.userName}"></div>
-	<form th:action="@{/logout}" method="post">
-		<input type="submit" class="info__btn" value="로그아웃"/>
-	</form>
+	<div sec:authorize="isAuthenticated()">
+		<span>현재 로그인 ID</span>
+		<div th:text="${session.userId}"></div>
+		<br/>
+		<span>현재 사용자명</span>
+		<div th:text="${session.userName}"></div>
+	</div>
+
+	<div sec:authorize="isAuthenticated()">
+		<form th:action="@{/logout}" method="post">
+			<input type="submit" value="로그아웃"/>
+		</form>
+	</div>
+	<div sec:authorize="!isAuthenticated()">
+		<button type="button" onclick="loginGo()" >로그인</button>
+	</div>
+
 </div>
 
 </html>
