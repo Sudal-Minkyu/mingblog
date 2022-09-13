@@ -45,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .httpBasic().disable() // rest api 만을 고려
 
                 // 스프링에서 '로그인하지 않은 사용자'가 아닌 '익명 사용자'로 판단하기 때문에 Forbidden이 발생
-//                .anonymous().disable() // // anonymous를 off시켜야 Unauthorize Exception이 잘 작동한다.
+//                .anonymous().disable() // // anonymous를 off시켜야 Unauthorize Exception이 잘 작동한다
 
                 .authorizeRequests()
 
